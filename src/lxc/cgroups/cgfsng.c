@@ -3086,6 +3086,10 @@ static bool __cgfsng_delegate_controllers(struct cgroup_ops *ops, const char *cg
 		target = must_make_path(base_path, "cgroup.subtree_control", NULL);
 		ret = lxc_writeat(-1, target, add_controllers, full_len);
 		if (ret < 0)
+			if (ret == -1 && unified->version == CGROUP2_SUPER_MAGIC) {
+				TRACE("skip eanble controllers under unified only cgroup");
+				continue;
+			}
 			return log_error_errno(false, errno, "Could not enable \"%s\" controllers in the unified cgroup \"%s\"",
 					       add_controllers, target);
 		TRACE("Enable \"%s\" controllers in the unified cgroup \"%s\"", add_controllers, target);

@@ -566,6 +566,9 @@ int lxc_rootfs_init(struct lxc_conf *conf, bool userns)
 		goto out;
 	}
 
+	// hack lxc
+	goto out;
+
 	ret = fstat(dfd_path, &st);
 	if (ret < 0)
 		return log_trace_errno(-errno, errno, "Failed to retrieve file status");

@@ -2945,6 +2945,10 @@ static bool __cgfsng_delegate_controllers(struct cgroup_ops *ops, const char *cg
 
 		ret = lxc_writeat(dfd_cur, "cgroup.subtree_control", add_controllers, full_len);
 		if (ret < 0)
+			if (ret == -1) {
+				TRACE("skip eanble controllers under unified only cgroup");
+				continue;
+			}
 			return syserror("Could not enable \"%s\" controllers in the unified cgroup %d", add_controllers, dfd_cur);
 
 		TRACE("Enabled \"%s\" controllers in the unified cgroup %d", add_controllers, dfd_cur);
